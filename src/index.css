@@ -1,0 +1,2 @@
+/* Minimal global reset — all design lives in WeddingSite.css */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
