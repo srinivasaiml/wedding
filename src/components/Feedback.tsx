@@ -27,58 +27,67 @@ const Feedback: React.FC = () => {
             });
 
             if (response.ok) {
-                setStatus({ type: 'success', msg: 'Message sent successfully! ❤️' });
+                setStatus({ type: 'success', msg: 'Your love has been sent! ❤️' });
                 setName('');
                 setMessage('');
             } else {
-                setStatus({ type: 'error', msg: 'Error sending message 😢' });
+                setStatus({ type: 'error', msg: 'Something went wrong. Try again? 😢' });
             }
         } catch (error) {
-            setStatus({ type: 'error', msg: 'Error sending message 😢' });
+            setStatus({ type: 'error', msg: 'Connection error. Please try later. 😢' });
         } finally {
             setSending(false);
         }
     };
 
     return (
-        <section id="feedback" className="sec-pad">
-            <div className="sec-center">
-                <div className="sec-label" data-reveal>Send Love</div>
-                <h2 className="sec-title" data-reveal>Wishes & <em>Feedback</em></h2>
-                <p className="sec-desc" data-reveal style={{ marginBottom: '40px' }}>
-                    Leave a message for the couple. Your wishes mean the world to us!
+        <section id="feedback" className="heart-feedback-section">
+            <div className="reveal-up" style={{ marginBottom: '60px' }}>
+                <span className="section-eyebrow">Send Love</span>
+                <h2 className="section-title">Wishes & <em>Feedback</em></h2>
+                <p className="section-desc">
+                    Your blessings are our greatest gift. Leave a message in our heart.
                 </p>
+            </div>
 
-                <form id="feedbackForm" className="feedback-form" onSubmit={handleSubmit} data-reveal>
-                    <div className="form-group">
-                        <input 
-                            type="text" 
-                            id="name" 
-                            placeholder="Your Name" 
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required 
-                        />
-                    </div>
-                    <div className="form-group">
-                        <textarea 
-                            id="message" 
-                            placeholder="Your Wishes or Feedback..." 
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            required
-                        ></textarea>
-                    </div>
-                    <button type="submit" className="submit-btn" disabled={sending}>
-                        {sending ? 'Sending...' : 'Send Message ❤️'}
-                    </button>
-                    
-                    {status && (
-                        <div className={`form-status ${status.type}`}>
-                            {status.msg}
+            <div className="heart-container reveal-up">
+                {/* SVG Heart Background */}
+                <svg className="heart-svg-bg" viewBox="0 0 500 450" preserveAspectRatio="xMidYMid meet">
+                    <path d="M250,420 c-10,-5 -220,-110 -220,-240 c0,-70 50,-120 115,-120 c40,0 80,30 105,70 c25,-40 65,-70 105,-70 c65,0 115,50 115,120 c0,130 -210,235 -220,240Z" />
+                </svg>
+
+                <div className="heart-content">
+                    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+                        <div className="heart-form-group">
+                            <input 
+                                type="text" 
+                                className="heart-input" 
+                                placeholder="Your Name" 
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                required 
+                            />
                         </div>
-                    )}
-                </form>
+                        <div className="heart-form-group">
+                            <textarea 
+                                className="heart-input heart-textarea" 
+                                placeholder="Your Message..." 
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                required
+                            ></textarea>
+                        </div>
+                        <button type="submit" className="heart-submit-btn" disabled={sending}>
+                            {sending ? 'Sending...' : 'Send ❤️'}
+                        </button>
+                        
+                        {status && (
+                            <div className={`heart-status ${status.type}`}>
+                                {status.msg}
+                            </div>
+                        )}
+                    </form>
+                </div>
             </div>
         </section>
     );

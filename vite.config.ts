@@ -5,4 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: "/",
   plugins: [react()],
+  assetsInclude: ['**/*.mpeg', '**/*.mp3', '**/*.ogg', '**/*.wav'],
 })

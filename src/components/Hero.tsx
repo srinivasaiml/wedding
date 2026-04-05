@@ -5,88 +5,90 @@ import CanvasParticles from './CanvasParticles';
 const Hero: React.FC = () => {
     const heroRef = useRef<HTMLDivElement>(null);
     const centerRef = useRef<HTMLDivElement>(null);
+    const n1Ref = useRef<HTMLSpanElement>(null);
+    const n2Ref = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
-        // Initial setup for GSAP
-        gsap.set(['#ht', '#hn1', '#ha', '#hn2', '#hsub', '#si'], { y: 30, opacity: 0 });
+        // Initial setup
+        gsap.set(['.hero-tagline', '#hn1', '#ha', '#hn2', '.hero-subtitle', '.scroll-indicator'], { 
+            y: 30, opacity: 0 
+        });
 
-        const tl = gsap.timeline({ delay: 5.3 });
-        tl.to('#ht', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' })
-          .fromTo('#hn1', { opacity: 0, y: 50, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 1.3, ease: 'power3.out' }, '-=.4')
-          .to('#ha', { opacity: 1, duration: 0.9, ease: 'power2.out' }, '-=.7')
-          .fromTo('#hn2', { opacity: 0, y: 50, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 1.3, ease: 'power3.out' }, '-=.7')
-          .to('#hsub', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=.5')
-          .to('#si', { opacity: 0.7, duration: 0.8 }, '-=.3');
+        const tl = gsap.timeline({ delay: 5.5 });
+        tl.to('.hero-tagline', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' })
+          .fromTo('#hn1', { opacity: 0, scale: 0.9, x: -30 }, { opacity: 1, scale: 1, x: 0, duration: 1.4, ease: 'expo.out' }, '-=.5')
+          .to('#ha', { opacity: 1, scale: 1.2, duration: 1, ease: 'back.out(2)' }, '-=.8')
+          .fromTo('#hn2', { opacity: 0, scale: 0.9, x: 30 }, { opacity: 1, scale: 1, x: 0, duration: 1.4, ease: 'expo.out' }, '-=.8')
+          .to('.hero-subtitle', { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, '-=.6')
+          .to('.scroll-indicator', { opacity: 0.7, duration: 1 }, '-=.4');
 
-        // Scroll animation for hero center
+        // Scroll Parallax
         gsap.to(centerRef.current, {
-            scale: 0.75,
+            y: -100,
+            scale: 0.9,
             opacity: 0,
-            y: -80,
-            filter: 'blur(8px)',
             scrollTrigger: {
                 trigger: heroRef.current,
                 start: 'top top',
                 end: 'bottom top',
-                scrub: 1.2
+                scrub: true
             }
         });
 
-        // 3D Tilt Effect
-        const handleMouseMove = (e: MouseEvent) => {
-            const px = (e.clientX / window.innerWidth - 0.5) * 2;
-            const py = (e.clientY / window.innerHeight - 0.5) * 2;
-            gsap.to(centerRef.current, {
-                rotateY: px * 2.5,
-                rotateX: -py * 2.5,
-                duration: 0.8,
-                ease: 'power2.out'
+        // Magnetic Hover Effect for Names
+        const magneticEffect = (el: HTMLElement | null) => {
+            if (!el) return;
+            const onMove = (e: MouseEvent) => {
+                const r = el.getBoundingClientRect();
+                const x = (e.clientX - (r.left + r.width / 2)) * 0.35;
+                const y = (e.clientY - (r.top + r.height / 2)) * 0.35;
+                gsap.to(el, { x, y, duration: 0.4, ease: 'power2.out' });
+            };
+            const onLeave = () => {
+                gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.3)' });
+            };
+            window.addEventListener('mousemove', (e) => {
+                const r = el.getBoundingClientRect();
+                const dist = Math.hypot(e.clientX - (r.left + r.width/2), e.clientY - (r.top + r.height/2));
+                if (dist < 150) onMove(e); else onLeave();
             });
         };
 
-        const handleMouseLeave = () => {
-            gsap.to(centerRef.current, {
-                rotateY: 0,
-                rotateX: 0,
-                duration: 0.8,
-                ease: 'power3.out'
-            });
-        };
-
-        const heroEl = heroRef.current;
-        heroEl?.addEventListener('mousemove', handleMouseMove);
-        heroEl?.addEventListener('mouseleave', handleMouseLeave);
+        magneticEffect(n1Ref.current);
+        magneticEffect(n2Ref.current);
 
         return () => {
-            heroEl?.removeEventListener('mousemove', handleMouseMove);
-            heroEl?.removeEventListener('mouseleave', handleMouseLeave);
+            ScrollTrigger.getAll().forEach(t => t.kill());
         };
     }, []);
 
     return (
-        <section id="hero" ref={heroRef}>
-            <CanvasParticles id="hero-canvas" particleCount={55} />
+        <section id="hero" ref={heroRef} style={{ background: 'transparent' }}>
+            <div className="silk-bg" />
+            <div className="grain-overlay" />
+            <CanvasParticles id="hero-canvas" particleCount={40} />
             
-            <svg className="hero-float hero-float-1" width="220" height="220" viewBox="0 0 200 200" fill="none" style={{ position: 'absolute', opacity: 0.12 }}>
-                <path d="M100 15C100 15 145 55 145 105C145 155 100 190 100 190C100 190 55 155 55 105C55 55 100 15 100 15Z" fill="rgba(212,175,122,0.06)" stroke="rgba(212,175,122,0.15)" strokeWidth="0.5" />
-            </svg>
-            <svg className="hero-float hero-float-2" width="180" height="180" viewBox="0 0 200 200" fill="none" style={{ position: 'absolute', opacity: 0.12 }}>
-                <circle cx="100" cy="100" r="85" fill="none" stroke="rgba(212,144,138,0.1)" strokeWidth="0.5" />
-            </svg>
-
             <div className="hero-center" ref={centerRef}>
-                <div className="hero-tagline" id="ht">The Journey of Two Souls</div>
-                <span className="hero-name" id="hn1">Uma</span>
-                <span className="hero-amp" id="ha">&</span>
-                <span className="hero-name" id="hn2">Vasu</span>
-                <div className="hero-subtitle" id="hsub">
-                    <span>Some stories are written in the stars — this one is written in the heart</span>
+                <div className="hero-tagline" style={{ letterSpacing: '8px', color: 'var(--gold)', textTransform: 'uppercase', fontSize: '14px', marginBottom: '30px' }}>
+                    💖 UMA ❤️ VASU
+                </div>
+                
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '30px' }}>
+                    <span className="hero-name" id="hn1" ref={n1Ref} style={{ fontFamily: 'Great Vibes', fontSize: 'clamp(60px, 12vw, 150px)', color: 'var(--charcoal)' }}>Uma</span>
+                    <span className="hero-amp" id="ha" style={{ fontFamily: 'Cormorant Garamond', fontSize: 'clamp(30px, 6vw, 80px)', color: 'var(--gold)', opacity: 0 }}>&</span>
+                    <span className="hero-name" id="hn2" ref={n2Ref} style={{ fontFamily: 'Great Vibes', fontSize: 'clamp(60px, 12vw, 150px)', color: 'var(--charcoal)' }}>Vasu</span>
+                </div>
+
+                <div className="hero-subtitle" style={{ marginTop: '30px', maxWidth: '600px', margin: '30px auto 0' }}>
+                    <p style={{ fontFamily: 'Cormorant Garamond', fontSize: '22px', fontStyle: 'italic', color: 'var(--text)' }}>
+                        Some stories are written in the stars — this one is written in the heart
+                    </p>
                 </div>
             </div>
 
-            <div className="scroll-indicator" id="si">
-                <span>Scroll to begin</span>
-                <div className="scroll-arrow"></div>
+            <div className="scroll-indicator" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
+                <span style={{ fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', color: '#B8860B' }}>Scroll to begin</span>
+                <div className="scroll-arrow" style={{ width: '1px', height: '60px', background: 'var(--gold-light)' }}></div>
             </div>
         </section>
     );

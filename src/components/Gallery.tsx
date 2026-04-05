@@ -1,14 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const galleryItems = [
-    { id: 1, src: "image1.jpeg", label: "The First Glance" },
-    { id: 2, src: "image2.jpeg", label: "Something Blooming" },
-    { id: 3, src: "image3.jpeg", label: "Golden Hours" },
-    { id: 4, src: "image4.jpeg", label: "Finally Together" },
-    { id: 5, src: "image5.jpeg", label: "Dreamy Days" },
-    { id: 6, src: "image6.jpeg", label: "Feels Like Forever" },
-    { id: 7, src: "image1.jpeg", label: "Pure Joy" }
+  { id: 1, src: "/image1.jpeg", label: "మొదటి చూపు" },
+  { id: 2, src: "/image2.jpeg", label: "ప్రేమ వికసిస్తుంది" },
+  { id: 3, src: "/image3.jpeg", label: "బంగారు గంటలు" },
+  { id: 4, src: "/image4.jpeg", label: "కలిసి ఉన్నాం" },
+  { id: 5, src: "/image5.jpeg", label: "స్వప్న రోజులు" },
+  { id: 6, src: "/image6.jpeg", label: "నిత్యం లాగా" },
+  { id: 7, src: "/image1.jpeg", label: "శుద్ధ ఆనందం" }
 ];
 
 const Gallery: React.FC = () => {
@@ -20,7 +23,7 @@ const Gallery: React.FC = () => {
         const wrap = wrapRef.current;
         if (!track || !wrap) return;
 
-        const totalScroll = track.scrollWidth - window.innerWidth + 100;
+        const totalScroll = track.scrollWidth - window.innerWidth + 200;
 
         const anim = gsap.to(track, {
             x: -totalScroll,
@@ -31,54 +34,41 @@ const Gallery: React.FC = () => {
                 end: () => `+=${totalScroll}`,
                 scrub: 1.2,
                 pin: true,
-                anticipatePin: 1,
-                invalidateOnRefresh: true,
+                anticipatePin: 1
             }
         });
 
-        // 3D Tilt for cards
+        // Individual Card Parallax within the track
         const cards = track.querySelectorAll('.gallery-card');
         cards.forEach((card: any) => {
-            const handleMouseMove = (e: MouseEvent) => {
-                const r = card.getBoundingClientRect();
-                const x = (e.clientX - r.left) / r.width - 0.5;
-                const y = (e.clientY - r.top) / r.height - 0.5;
-                gsap.to(card, {
-                    rotateY: x * 18,
-                    rotateX: -y * 18,
-                    transformPerspective: 900,
-                    duration: 0.35,
-                    ease: 'power2.out',
-                    boxShadow: `${-x * 25}px ${y * 25}px 50px rgba(0,0,0,0.4)`
-                });
-            };
-            const handleMouseLeave = () => {
-                gsap.to(card, { rotateY: 0, rotateX: 0, boxShadow: 'none', duration: 0.6, ease: 'power3.out' });
-            };
-            card.addEventListener('mousemove', handleMouseMove);
-            card.addEventListener('mouseleave', handleMouseLeave);
+           gsap.fromTo(card.querySelector('img'), 
+             { scale: 1.2 }, 
+             { scale: 1.0, scrollTrigger: { trigger: card, start: 'left right', end: 'right left', scrub: true }}
+           );
         });
 
         return () => {
             anim.kill();
+            ScrollTrigger.getAll().forEach(t => t.kill());
         };
     }, []);
 
     return (
-        <section id="gallery" className="sec-pad" style={{ paddingTop: '60px' }}>
-            <div className="sec-center" style={{ position: 'relative', zIndex: 2, marginBottom: '10px' }}>
-                <div className="sec-label">Captured Moments</div>
-                <h2 className="sec-title">Our <em>Gallery</em></h2>
+        <section id="gallery" className="sec-pad" style={{ background: '#FFFFFF' }}>
+            <div className="sec-center" style={{ position: 'relative', zIndex: 10, marginBottom: '60px', textAlign: 'center' }}>
+                <div style={{ fontSize: '32px', marginBottom: '10px' }}>🎬 Captured Moments</div>
+                <h2 style={{ fontSize: '42px', color: '#B8860B' }}>మా గ్యాలరీ</h2>
             </div>
+            
             <div className="gallery-wrap" ref={wrapRef}>
                 <div className="gallery-track" ref={trackRef}>
                     {galleryItems.map((item) => (
                         <div key={item.id} className="gallery-card">
                             <img src={item.src} alt={item.label} loading="lazy" />
-                            <div className="gallery-card-label" style={{ 
-                                position: 'absolute', bottom: '20px', left: '20px', right: '20px', zIndex: 2,
-                                fontFamily: 'Cormorant Garamond, serif', fontSize: '18px', color: 'var(--gold-light)',
-                                opacity: 0, transition: 'all 0.4s'
+                            <div style={{ 
+                                position: 'absolute', bottom: '0', left: '0', right: '0', padding: '20px', 
+                                background: 'linear-gradient(transparent, rgba(0,0,0,0.4))', 
+                                color: '#FFF', fontSize: '20px', textAlign: 'center' 
                             }}>
                                 {item.label}
                             </div>

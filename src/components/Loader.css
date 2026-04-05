@@ -1,0 +1,338 @@
+/* ══════════════════════════════════════
+   UV Love Story — Cinematic Loader CSS
+   ══════════════════════════════════════ */
+
+:root {
+  --rose: #e8364e;
+  --rose-deep: #b81d33;
+  --rose-soft: #ff6b81;
+  --gold: #d4a853;
+  --gold-light: #f0d48a;
+  --cream: #fff5eb;
+  --loader-bg: #080609;
+}
+
+#loader-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--loader-bg);
+  font-family: 'Cormorant Garamond', serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* ── gradient mesh blobs ── */
+.ldr-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.ldr-mesh-b { position: absolute; border-radius: 50%; filter: blur(90px); will-change: transform; }
+.ldr-mesh-b:nth-child(1) {
+  width: 520px; height: 520px;
+  background: rgba(232,54,78,.09);
+  top: 15%; left: 25%;
+  animation: ldr-mF 10s ease-in-out infinite;
+}
+.ldr-mesh-b:nth-child(2) {
+  width: 420px; height: 420px;
+  background: rgba(212,168,83,.065);
+  bottom: 15%; right: 15%;
+  animation: ldr-mF 12s ease-in-out infinite -4s;
+}
+.ldr-mesh-b:nth-child(3) {
+  width: 360px; height: 360px;
+  background: rgba(232,54,78,.055);
+  top: 55%; left: 55%;
+  animation: ldr-mF 9s ease-in-out infinite -7s;
+}
+@keyframes ldr-mF {
+  0%,100% { transform: translate(0,0) scale(1) }
+  33%      { transform: translate(35px,-25px) scale(1.12) }
+  66%      { transform: translate(-25px,18px) scale(.93) }
+}
+
+/* ── bokeh canvas ── */
+#ldr-bokeh {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+}
+
+/* ── floating hearts ── */
+.ldr-fh-wrap {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden;
+}
+.ldr-fh {
+  position: absolute; bottom: -40px; opacity: 0;
+  animation: ldr-fhU var(--d) linear infinite;
+  animation-delay: var(--dl);
+  color: var(--rose);
+  font-size: var(--s);
+}
+@keyframes ldr-fhU {
+  0%   { opacity:0; transform:translateY(0) rotate(0) scale(.3) }
+  6%   { opacity:var(--o) }
+  94%  { opacity:var(--o) }
+  100% { opacity:0; transform:translateY(-112vh) rotate(var(--r)) scale(.7) }
+}
+
+/* ── film grain ── */
+.ldr-grain {
+  position: absolute; inset: 0; z-index: 98;
+  pointer-events: none; opacity: .032; mix-blend-mode: overlay;
+}
+.ldr-grain-in {
+  position: absolute; inset: -250%; width: 400%; height: 400%;
+  background-repeat: repeat;
+  animation: ldr-gS .35s steps(4) infinite;
+}
+@keyframes ldr-gS {
+  0%   { transform: translate(0,0) }
+  25%  { transform: translate(-4%,-6%) }
+  50%  { transform: translate(3%,4%) }
+  75%  { transform: translate(-2%,2%) }
+}
+
+/* ── vignette ── */
+.ldr-vignette {
+  position: absolute; inset: 0; z-index: 97; pointer-events: none;
+  background: radial-gradient(ellipse at center,transparent 28%,rgba(0,0,0,.82) 100%);
+}
+
+/* ── letterbox bars ── */
+.ldr-lb {
+  position: absolute; left: 0; right: 0; height: 52px;
+  background: #000; z-index: 102;
+  transition: height 2s cubic-bezier(.76,0,.24,1);
+}
+.ldr-lb.t { top: 0 }
+.ldr-lb.b { bottom: 0 }
+.ldr-lb.open { height: 0 }
+
+/* ── completion radial glow ── */
+.ldr-c-glow {
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background: radial-gradient(ellipse at center,rgba(232,54,78,.14) 0%,rgba(212,168,83,.06) 35%,transparent 68%);
+  opacity: 0;
+}
+.ldr-c-glow.flash { animation: ldr-cgF 2.2s ease forwards }
+@keyframes ldr-cgF {
+  0%   { opacity: 0 }
+  20%  { opacity: 1 }
+  100% { opacity: 0 }
+}
+
+/* ── main scene ── */
+.ldr-scene {
+  position: relative; z-index: 10;
+  display: flex; flex-direction: column; align-items: center; gap: 28px;
+  opacity: 0;
+  animation: ldr-scIn 1.4s ease .2s forwards;
+}
+@keyframes ldr-scIn { to { opacity: 1 } }
+
+/* ── heart wrap ── */
+.ldr-hw {
+  position: relative; width: 110px; height: 110px;
+  opacity: 0; transform: scale(0);
+  transition: all .7s cubic-bezier(.34,1.56,.64,1);
+}
+.ldr-hw.show  { opacity: 1; transform: scale(1) }
+.ldr-hw.beat  { animation: ldr-hBeat .7s ease }
+.ldr-hw.die   { opacity: 0; transform: scale(1.4); filter: blur(8px); transition: all .5s ease }
+.ldr-hw svg   { width: 100%; height: 100%; overflow: visible }
+
+.ldr-hr {
+  position: absolute; inset: -22px;
+  border: 1px solid var(--rose); border-radius: 50%; opacity: 0;
+  animation: ldr-hrP 2.8s ease-out infinite;
+}
+.ldr-hr:nth-child(2) { animation-delay: .9s }
+.ldr-hr:nth-child(3) { animation-delay: 1.8s }
+@keyframes ldr-hrP {
+  0%   { transform: scale(.65); opacity: .35 }
+  100% { transform: scale(2.1); opacity: 0 }
+}
+@keyframes ldr-hBeat {
+  0%,100% { transform: scale(1) }
+  18%     { transform: scale(1.18) }
+  36%     { transform: scale(1) }
+  54%     { transform: scale(1.12) }
+  72%     { transform: scale(1) }
+}
+
+/* ── phase blocks ── */
+.ldr-ph {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  width: 340px; opacity: 0; transform: translateY(16px);
+  transition: all .55s ease;
+}
+.ldr-ph.show { opacity: 1; transform: translateY(0) }
+.ldr-ph.hide { opacity: 0; transform: translateY(-10px) scale(.96); pointer-events: none }
+
+.ldr-pl {
+  font-size: 9.5px; font-weight: 300; letter-spacing: 4.5px;
+  text-transform: uppercase; color: var(--gold); opacity: .55;
+}
+.ldr-ptw { width: 100%; position: relative }
+.ldr-pt  { width: 100%; height: 3px; background: rgba(255,255,255,.035); border-radius: 6px; overflow: hidden }
+.ldr-pt.p2t { height: 2px }
+
+.ldr-pf {
+  height: 100%; width: 0%; border-radius: 6px;
+  position: relative; overflow: hidden; will-change: width;
+}
+.ldr-pf.rb { background: linear-gradient(90deg,var(--rose-deep),var(--rose),var(--rose-soft)) }
+.ldr-pf.gb { background: linear-gradient(90deg,#9a6e28,var(--gold),var(--gold-light)) }
+
+/* glow below bar */
+.ldr-pf::before {
+  content: ''; position: absolute; top: -7px; left: 0; right: 0;
+  height: 17px; border-radius: 50%; filter: blur(11px); opacity: .45;
+}
+.ldr-pf.rb::before { background: var(--rose) }
+.ldr-pf.gb::before { background: var(--gold) }
+
+/* shimmer sweep */
+.ldr-pf::after {
+  content: ''; position: absolute; top: -4px; bottom: -4px; width: 55px;
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+  animation: ldr-shim 1.1s ease-in-out infinite;
+}
+.ldr-pf.gb::after { animation-direction: reverse; animation-duration: 1.4s; width: 40px }
+@keyframes ldr-shim {
+  0%   { left: -55px }
+  100% { left: calc(100% + 10px) }
+}
+
+/* leading dot */
+.ldr-pd {
+  position: absolute; top: 50%; transform: translate(-50%,-50%);
+  width: 11px; height: 11px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 14px rgba(255,255,255,.55), 0 0 28px rgba(232,54,78,.25);
+  left: 0%; transition: left .08s linear; z-index: 2;
+}
+.ldr-pp {
+  font-size: 12.5px; font-weight: 300; color: rgba(255,255,255,.25);
+  font-variant-numeric: tabular-nums; letter-spacing: 2px;
+}
+
+/* ── title block ── */
+.ldr-tb {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  position: relative; opacity: 0;
+  transform: translateY(18px) scale(.96);
+  transition: all .6s ease;
+}
+.ldr-tb.show { opacity: 1; transform: translateY(0) scale(1) }
+.ldr-tr { display: flex; justify-content: center }
+
+.ldr-tc {
+  display: inline-block; opacity: 0;
+  transform: translateY(28px) scale(.5); position: relative;
+}
+.ldr-tc.uv {
+  font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300;
+  letter-spacing: 14px; color: var(--gold); margin: 0 2px;
+}
+.ldr-tc.sc { font-family: 'Great Vibes', cursive; font-size: 52px; color: var(--cream) }
+.ldr-tc.st { font-family: 'Great Vibes', cursive; font-size: 44px; color: var(--cream); margin-top: -4px }
+
+.ldr-tc.rev    { animation: ldr-tR  .7s  cubic-bezier(.34,1.56,.64,1) forwards }
+.ldr-tc.uv.rev { animation: ldr-uvR .55s cubic-bezier(.34,1.56,.64,1) forwards }
+
+@keyframes ldr-tR {
+  0%   { opacity:0; transform:translateY(28px) scale(.5); text-shadow:none }
+  30%  { opacity:1; transform:translateY(-7px) scale(1.1);
+         text-shadow:0 0 40px rgba(232,54,78,.85),0 0 70px rgba(232,54,78,.35);
+         color:var(--rose-soft) }
+  60%  { transform:translateY(2px) scale(1) }
+  100% { opacity:1; transform:translateY(0) scale(1);
+         text-shadow:0 0 28px rgba(232,54,78,.2),0 2px 6px rgba(0,0,0,.5);
+         color:var(--cream) }
+}
+@keyframes ldr-uvR {
+  0%   { opacity:0; transform:translateY(16px) scale(.5); text-shadow:none }
+  45%  { opacity:1; transform:translateY(-3px) scale(1.06);
+         text-shadow:0 0 22px rgba(212,168,83,.6); color:var(--gold-light) }
+  100% { opacity:1; transform:translateY(0) scale(1);
+         text-shadow:0 0 14px rgba(212,168,83,.15); color:var(--gold) }
+}
+
+/* final shimmer on chars */
+.ldr-tc.shimmer { animation: ldr-chShim .5s ease forwards }
+@keyframes ldr-chShim {
+  0%   { text-shadow:0 0 28px rgba(232,54,78,.2),0 2px 6px rgba(0,0,0,.5) }
+  50%  { text-shadow:0 0 55px rgba(232,54,78,.7),0 0 90px rgba(212,168,83,.35),0 2px 6px rgba(0,0,0,.5) }
+  100% { text-shadow:0 0 28px rgba(232,54,78,.2),0 2px 6px rgba(0,0,0,.5) }
+}
+
+/* ornament */
+.ldr-orn {
+  display: flex; align-items: center; gap: 14px;
+  opacity: 0; transform: scaleX(0); margin: 6px 0 2px;
+}
+.ldr-orn.show { animation: ldr-ornI .65s ease forwards }
+@keyframes ldr-ornI { to { opacity: 1; transform: scaleX(1) } }
+
+.ldr-ol {
+  width: 55px; height: 1px;
+  background: linear-gradient(90deg,transparent,rgba(232,54,78,.35),transparent);
+}
+.ldr-ol:last-child { transform: scaleX(-1) }
+.ldr-oh {
+  color: var(--rose); font-size: 13px;
+  animation: ldr-oB 1.6s ease-in-out infinite;
+}
+@keyframes ldr-oB {
+  0%,100% { transform: scale(1) }
+  15%     { transform: scale(1.3) }
+  30%     { transform: scale(1) }
+  45%     { transform: scale(1.18) }
+  60%     { transform: scale(1) }
+}
+
+/* light sweep */
+.ldr-ls {
+  position: absolute; top: -10px; bottom: -10px; width: 90px;
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);
+  transform: translateX(-250px);
+  pointer-events: none; z-index: 5; border-radius: 4px;
+}
+.ldr-ls.go { animation: ldr-lsA 1.1s ease-in-out forwards }
+@keyframes ldr-lsA {
+  0%   { transform: translateX(-250px) }
+  100% { transform: translateX(calc(100% + 350px)) }
+}
+
+/* subtitle */
+.ldr-sub {
+  font-size: 10.5px; font-weight: 300; letter-spacing: 6px;
+  text-transform: uppercase; color: rgba(255,255,255,.18);
+  opacity: 0; transform: translateY(8px);
+}
+.ldr-sub.show { animation: ldr-subI 1.2s ease .3s forwards }
+@keyframes ldr-subI { to { opacity: 1; transform: translateY(0) } }
+
+/* sparkle particles */
+.ldr-spk {
+  position: fixed; border-radius: 50%; pointer-events: none;
+  z-index: 50000; animation: ldr-spkO .55s ease-out forwards;
+}
+@keyframes ldr-spkO {
+  0%   { opacity: 1; transform: translate(0,0) scale(1) }
+  100% { opacity: 0; transform: translate(var(--tx),var(--ty)) scale(0) }
+}
+
+/* ── responsive ── */
+@media (max-width: 520px) {
+  .ldr-tc.sc { font-size: 40px }
+  .ldr-tc.st { font-size: 34px }
+  .ldr-tc.uv { font-size: 24px; letter-spacing: 10px }
+  .ldr-ph    { width: 270px }
+  .ldr-scene { gap: 22px }
+  .ldr-lb    { height: 36px }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important }
+}
