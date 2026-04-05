@@ -263,8 +263,8 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
           const t = Math.min((now - t0) / dur, 1);
           const e = easeIO(t);
 
-          hStroke.style.strokeDashoffset = String(pathLen * (1 - e));
-          hFill.setAttribute('opacity', String(e * 0.85));
+          hStroke!.style.strokeDashoffset = String(pathLen * (1 - e));
+          hFill!.setAttribute('opacity', String(e * 0.85));
 
           const pct = Math.round(e * 100);
           if (f1Ref.current) f1Ref.current.style.width = pct + '%';
@@ -272,7 +272,7 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
           if (p1Ref.current) p1Ref.current.textContent  = pct + '%';
 
           if (t < 0.98) {
-            const pt = hStroke.getPointAtLength(e * pathLen);
+            const pt = hStroke!.getPointAtLength(e * pathLen);
             emitTip(pt.x, pt.y);
           }
 
