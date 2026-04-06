@@ -977,12 +977,15 @@ footer {
 
   .chapter-glass-text {
     max-height: none;
+    height: auto;
+    overflow: visible;
+    overscroll-behavior: auto;
     font-size: 14px;
     padding: 20px;
     line-height: 1.7;
     text-align: left;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    pointer-events: none;
+    touch-action: pan-y;
   }
 
   .chapter-glass-text::-webkit-scrollbar {
