@@ -259,7 +259,7 @@ const WeddingSite: React.FC = () => {
         isDesktop: "(min-width: 769px)",
         isMobile: "(max-width: 768px)"
       }, (context) => {
-        const { isMobile } = context.conditions as { isMobile: boolean; isDesktop: boolean };
+        const { isMobile, isDesktop } = context.conditions as { isMobile: boolean; isDesktop: boolean };
 
         if (!isLoading) {
           /* Chapter reveals */
@@ -299,26 +299,64 @@ const WeddingSite: React.FC = () => {
             });
           });
 
-          /* Gallery horizontal scroll */
+          /* Gallery - Hybrid Responsive Model */
           const wrap = galleryWrapRef.current;
           const track = galleryTrackRef.current;
-          if (wrap && track) {
+          const cards = gsap.utils.toArray<HTMLElement>('.gallery-card');
+
+          if (isDesktop && wrap && track) {
+            /* 🖥️ DESKTOP: Cinematic Horizontal 3D CoverFlow */
             const totalScroll = track.scrollWidth - window.innerWidth;
             if (totalScroll > 0) {
-              gsap.to(track, {
+              const scrollTween = gsap.to(track, {
                 x: -totalScroll,
                 ease: 'none',
                 scrollTrigger: {
                   trigger: wrap,
                   start: 'top top',
-                  end: () => `+=${totalScroll + (isMobile ? 100 : 200)}`,
-                  scrub: 1.5,
+                  end: () => `+=${totalScroll + 200}`,
+                  scrub: 1.0,
                   pin: true,
                   anticipatePin: 1,
                   invalidateOnRefresh: true,
                 }
               });
+
+              cards.forEach((card) => {
+                const tl = gsap.timeline({
+                  scrollTrigger: {
+                    trigger: card,
+                    containerAnimation: scrollTween,
+                    start: "left right",
+                    end: "right left",
+                    scrub: true,
+                  }
+                });
+                tl.fromTo(card,
+                  { scale: 0.8, opacity: 0.5, rotationY: -25, z: -100 },
+                  { scale: 1, opacity: 1, rotationY: 0, z: 0, ease: 'power1.out', duration: 1 }
+                ).to(card,
+                  { scale: 0.8, opacity: 0.5, rotationY: 25, z: -100, ease: 'power1.in', duration: 1 }
+                );
+              });
             }
+          } else if (isMobile && cards.length > 0) {
+            /* 📱 MOBILE: Vertical Stacked Memory Deck */
+            cards.forEach((card, i) => {
+              if (i < cards.length - 1) {
+                gsap.to(card, {
+                  scale: 0.85,
+                  opacity: 0.3,
+                  y: -50,
+                  scrollTrigger: {
+                    trigger: cards[i + 1],
+                    start: "top 80%",
+                    end: "top 30%",
+                    scrub: true,
+                  }
+                });
+              }
+            });
           }
         }
       });

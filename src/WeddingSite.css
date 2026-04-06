@@ -1,25 +1,36 @@
 /* =====================================================
    LIVING MEMORY CANVAS — MIDNIGHT ROMANCE DESIGN
    Dark Cinematic / Glass / Gold / Stars
+   ✅ COMPLETE RESPONSIVE + MOBILE IMAGE SWAP + GALLERY FIX
    ===================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
+  /* ── Dark Backgrounds ── */
   --midnight: #0D0A0B;
-  --deep: #12100E;
-  --panel: #1A1614;
-  --gold: #C5A059;
-  /* Refined Champagne Gold */
-  --gold-dim: #8B7355;
-  --rose: #E8B4B8;
-  --ivory: #F5EFE6;
-  --white: rgba(255, 255, 255, 0.92);
-  --glass: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(197, 160, 89, 0.25);
-  --text: rgba(245, 239, 230, 0.85);
-  --text-dim: rgba(245, 239, 230, 0.55);
+  --deep:     #12100E;
+  --panel:    #1A1614;
+
+  /* ── Accent Colors (vibrant & warm) ── */
+  --gold:       #E8B86D;       /* Warm bright gold */
+  --gold-dim:   #C9954A;       /* Muted gold */
+  --rose:       #F4A0B5;       /* Soft bright rose */
+  --coral:      #FF7F6E;       /* Warm coral for variety */
+  --mint-text:  #7FFFD4;       /* Aquamarine — for highlights */
+  --lavender:   #C3B1E1;       /* Soft lavender */
+
+  /* ── Text Colors ── */
+  --ivory:    #FAF0E6;          /* Warm white — headings */
+  --text:     rgba(250, 240, 230, 0.90); /* Main body text */
+  --text-dim: rgba(230, 210, 185, 0.65); /* Dimmed text */
+
+  /* ── Glass / Borders ── */
+  --white:        rgba(255, 255, 255, 0.92);
+  --glass:        rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(232, 184, 109, 0.22);
 }
+
 
 *,
 *::before,
@@ -34,6 +45,7 @@ html {
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-dim) transparent;
+  width: 100%;
 }
 
 html::-webkit-scrollbar {
@@ -50,6 +62,9 @@ body {
   color: var(--ivory);
   background: var(--midnight);
   overflow-x: hidden;
+  width: 100%;
+  position: relative;
+  -webkit-text-size-adjust: 100%;
 }
 
 /* ── STARS CANVAS ── */
@@ -58,16 +73,19 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  width: 100vw;
+  height: 100vh;
 }
 
 /* ── SITE ROOT ── */
 .site-root {
   position: relative;
   z-index: 1;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* ── HERO ── */
-/* WeddingSite.css Update */
 #hero {
   position: relative;
   height: 100vh;
@@ -75,7 +93,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  /* Push to the right */
   overflow: hidden;
   background: var(--midnight);
 }
@@ -90,9 +107,7 @@ body {
   background-repeat: no-repeat;
   background-image: url('/home_page.png');
   filter: brightness(0.6) saturate(1.1);
-  /* Increased brightness and saturation for a premium look */
   transform: scale(1.1);
-  /* Slight zoom for dramatic entrance */
   transition: transform 10s ease-out;
   z-index: 0;
 }
@@ -102,14 +117,17 @@ body {
   z-index: 10;
   text-align: right;
   padding: 0 12vw 0 0;
-  /* Significant right padding */
   width: auto;
-  /* Take only needed space */
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
   gap: 10px;
+  pointer-events: none;
+}
+
+.hero-content>* {
+  pointer-events: auto;
 }
 
 .hero-eyebrow {
@@ -119,8 +137,6 @@ body {
   text-transform: uppercase;
   color: var(--gold-dim);
   margin-bottom: 35px;
-  margin-right: 0;
-  /* Ensure right alignment */
   opacity: 0;
   font-weight: 400;
 }
@@ -132,16 +148,17 @@ body {
   line-height: 1.1;
   margin: 0 0 25px;
   opacity: 0;
-  text-shadow: 0 0 50px rgba(201, 168, 76, 0.2);
+  text-shadow: 0 0 60px rgba(232, 184, 109, 0.35), 0 2px 20px rgba(0,0,0,0.5);
   font-weight: 400;
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .hero-names span {
   font-size: 0.7em;
-  /* Relative to names */
   filter: drop-shadow(0 0 15px rgba(232, 180, 184, 0.5));
   animation: heartPulse 3s ease-in-out infinite;
 }
@@ -153,7 +170,6 @@ body {
   color: var(--text-dim);
   max-width: 600px;
   margin: 0 0 50px auto;
-  /* Right alignment */
   line-height: 1.7;
   opacity: 0;
 }
@@ -162,7 +178,6 @@ body {
   width: min(320px, 60vw);
   height: 1px;
   margin: 10px 0 30px auto;
-  /* Explicitly right-aligned */
   position: relative;
   display: flex;
   align-items: center;
@@ -206,9 +221,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  /* Align to right */
   gap: 12px;
   margin-top: 20px;
+  pointer-events: auto;
 }
 
 .scroll-chevron {
@@ -237,13 +252,14 @@ body {
   text-align: center;
   position: relative;
   z-index: 2;
+  background: var(--midnight);
 }
 
 .section-eyebrow {
   font-size: 10px;
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--rose);
   display: block;
   margin-bottom: 20px;
 }
@@ -277,6 +293,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   overflow: hidden;
+  width: 100%;
 }
 
 .chapter:nth-child(even) {
@@ -287,10 +304,12 @@ body {
   direction: ltr;
 }
 
-/* Image side */
 .chapter-img-side {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
 }
 
 .chapter-img-side img {
@@ -300,6 +319,9 @@ body {
   object-position: center top;
   transform: scale(1.05);
   transition: transform 8s ease;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .chapter:hover .chapter-img-side img {
@@ -311,13 +333,13 @@ body {
   inset: 0;
   background: linear-gradient(to right, transparent 40%, var(--midnight) 100%);
   z-index: 1;
+  pointer-events: none;
 }
 
 .chapter:nth-child(even) .chapter-img-overlay {
   background: linear-gradient(to left, transparent 40%, var(--midnight) 100%);
 }
 
-/* Content side */
 .chapter-content {
   position: relative;
   z-index: 2;
@@ -328,6 +350,11 @@ body {
   background: var(--midnight);
 }
 
+.chapter:nth-child(2) .chapter-content { background: var(--deep); }
+.chapter:nth-child(3) .chapter-content { background: var(--midnight); }
+.chapter:nth-child(4) .chapter-content { background: var(--deep); }
+.chapter:nth-child(5) .chapter-content { background: var(--panel); }
+
 .chapter:nth-child(even) .chapter-content {
   padding: 80px 60px 80px 70px;
 }
@@ -336,7 +363,7 @@ body {
   font-size: 120px;
   font-family: 'Cormorant Garamond', serif;
   font-weight: 300;
-  color: rgba(201, 168, 76, 0.07);
+  color: rgba(232, 184, 109, 0.08);
   line-height: 1;
   position: absolute;
   top: 40px;
@@ -349,7 +376,7 @@ body {
   font-size: 10px;
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--rose);
   margin-bottom: 8px;
   display: block;
 }
@@ -378,6 +405,7 @@ body {
   font-weight: 400;
 }
 
+/* ✅ ENHANCED SCROLL CONTAINER (Desktop) */
 .chapter-glass-text {
   background: var(--glass);
   border: 1px solid var(--glass-border);
@@ -390,103 +418,132 @@ body {
   color: var(--text);
   max-height: 380px;
   overflow-y: auto;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  position: relative;
   scrollbar-width: thin;
-  scrollbar-color: var(--gold-dim) transparent;
+  scrollbar-color: var(--gold) transparent;
 }
 
 .chapter-glass-text::-webkit-scrollbar {
-  width: 2px;
+  width: 8px;
+}
+
+.chapter-glass-text::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
 }
 
 .chapter-glass-text::-webkit-scrollbar-thumb {
-  background: var(--gold-dim);
+  background: var(--gold);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.3s ease;
+  cursor: grab;
+}
+
+.chapter-glass-text::-webkit-scrollbar-thumb:hover {
+  background: var(--ivory);
+}
+
+.chapter-glass-text::-webkit-scrollbar-thumb:active {
+  cursor: grabbing;
+}
+
+.chapter-glass-text::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to top, var(--glass), transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0 0 12px 12px;
+  z-index: 1;
+}
+
+.chapter-glass-text.scrollable::after {
+  opacity: 1;
 }
 
 .chapter-divider {
   width: 40px;
-  height: 1px;
+  height: 2px;
   background: var(--gold);
   margin: 30px 0 0;
   opacity: 0.5;
+  border-radius: 1px;
 }
 
-/* ── GALLERY SECTION ── */
+/* ── GALLERY SECTION (HYBRID MODE) ── */
 .gallery-section {
-  padding: 140px 0 0;
+  padding: 140px 0;
   position: relative;
   z-index: 2;
+  background: var(--midnight);
 }
 
-.gallery-header {
-  text-align: center;
-  padding: 0 20px 80px;
-}
-
+/* Default Desktop: Cinematic Horizontal */
 .gallery-wrap {
   height: 100vh;
   overflow: hidden;
   position: relative;
+  perspective: 1200px;
 }
 
 .gallery-track {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 0 8vw;
+  gap: 30px;
+  padding: 0 10vw;
   height: 100%;
   will-change: transform;
+  transform-style: preserve-3d;
 }
 
 .gallery-card {
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   border: 1px solid var(--glass-border);
-}
-
-.gallery-card:nth-child(odd) {
+  transform-style: preserve-3d;
   width: 320px;
-  height: 420px;
-}
-
-.gallery-card:nth-child(even) {
-  width: 280px;
-  height: 360px;
+  height: 440px;
+  will-change: transform, opacity;
 }
 
 .gallery-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
-  transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+  transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 .gallery-card:hover img {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .gallery-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(13, 10, 11, 0.85) 0%, transparent 55%);
+  background: linear-gradient(to top, rgba(13, 10, 11, 0.9) 0%, transparent 60%);
   display: flex;
   align-items: flex-end;
-  padding: 20px;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.gallery-card:hover .gallery-card-overlay {
-  opacity: 1;
+  padding: 24px;
+  opacity: 0.9;
 }
 
 .gallery-card-label {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
   color: var(--ivory);
+  letter-spacing: 1px;
 }
 
 /* ── QUOTE SECTION ── */
@@ -496,13 +553,15 @@ body {
   position: relative;
   z-index: 2;
   background: var(--deep);
+  border-top: 1px solid rgba(232, 184, 109, 0.1);
+  border-bottom: 1px solid rgba(232, 184, 109, 0.1);
 }
 
 .quote-mark {
   font-family: 'Cormorant Garamond', serif;
   font-size: 160px;
   color: var(--gold);
-  opacity: 0.1;
+  opacity: 0.15;
   line-height: 0.6;
   display: block;
   margin-bottom: 40px;
@@ -512,7 +571,7 @@ body {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(22px, 3.5vw, 40px);
   font-style: italic;
-  color: var(--ivory);
+  color: var(--lavender);
   max-width: 880px;
   margin: 0 auto;
   line-height: 1.6;
@@ -537,7 +596,8 @@ body {
   text-align: center;
   position: relative;
   z-index: 2;
-  border-top: 1px solid rgba(201, 168, 76, 0.1);
+  background: var(--midnight);
+  border-top: 1px solid rgba(244, 160, 181, 0.12);
 }
 
 .epilogue-heart {
@@ -562,9 +622,9 @@ body {
 .epilogue-heading {
   font-family: 'Great Vibes', cursive;
   font-size: clamp(48px, 9vw, 100px);
-  color: var(--ivory);
+  color: var(--rose);
   margin-bottom: 40px;
-  text-shadow: 0 0 60px rgba(201, 168, 76, 0.2);
+  text-shadow: 0 0 60px rgba(244, 160, 181, 0.3);
 }
 
 .epilogue-body {
@@ -578,10 +638,10 @@ body {
 .epilogue-card {
   display: inline-block;
   padding: 40px 60px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass);
+  border: 1px solid rgba(244, 160, 181, 0.2);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px);
-  border-radius: 12px;
+  border-radius: 16px;
   max-width: 680px;
 }
 
@@ -597,17 +657,17 @@ body {
 .epilogue-signature {
   font-family: 'Great Vibes', cursive;
   font-size: 38px;
-  color: var(--gold);
+  color: var(--rose);
 }
 
-/* ── HEART FEEDBACK OVERHAUL ── */
+/* ── HEART FEEDBACK ── */
 .heart-feedback-section {
   padding: 160px 20px;
   text-align: center;
   position: relative;
   z-index: 2;
   overflow: visible;
-  /* To allow glow overflow */
+  background: var(--deep);
 }
 
 .heart-container {
@@ -619,7 +679,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 0 50px rgba(232, 180, 184, 0.15));
+  filter: drop-shadow(0 0 50px rgba(244, 160, 181, 0.15));
 }
 
 .heart-svg-bg {
@@ -629,7 +689,7 @@ body {
   height: 100%;
   z-index: -1;
   fill: var(--glass);
-  stroke: var(--glass-border);
+  stroke: rgba(244, 160, 181, 0.25);
   stroke-width: 0.5px;
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
@@ -642,19 +702,18 @@ body {
   0%,
   100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 20px rgba(232, 180, 184, 0.05));
+    filter: drop-shadow(0 0 20px rgba(244, 160, 181, 0.08));
   }
 
   50% {
     transform: scale(1.02);
-    filter: drop-shadow(0 0 40px rgba(232, 180, 184, 0.2));
+    filter: drop-shadow(0 0 40px rgba(244, 160, 181, 0.25));
   }
 }
 
 .heart-content {
   width: 100%;
   max-width: 380px;
-  /* Centered in the widest part of the heart */
   padding: 20px;
   z-index: 2;
   pointer-events: auto;
@@ -666,8 +725,8 @@ body {
 
 .heart-input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(201, 168, 76, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(232, 184, 109, 0.18);
   border-radius: 8px;
   padding: 16px 20px;
   color: var(--ivory);
@@ -678,9 +737,9 @@ body {
 }
 
 .heart-input:focus {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.09);
   border-color: var(--gold);
-  box-shadow: 0 0 15px rgba(201, 168, 76, 0.1);
+  box-shadow: 0 0 15px rgba(232, 184, 109, 0.15);
 }
 
 .heart-textarea {
@@ -691,10 +750,10 @@ body {
 .heart-submit-btn {
   width: 100%;
   padding: 18px;
-  background: var(--gold);
+  background: linear-gradient(135deg, var(--gold), var(--rose));
   border: none;
   border-radius: 8px;
-  color: var(--midnight);
+  color: #fff;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   letter-spacing: 2px;
@@ -703,12 +762,13 @@ body {
   transition: all 0.3s ease;
   overflow: hidden;
   position: relative;
+  box-shadow: 0 4px 20px rgba(232, 184, 109, 0.25);
 }
 
 .heart-submit-btn:hover {
-  background: var(--ivory);
+  opacity: 0.9;
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(201, 168, 76, 0.2);
+  box-shadow: 0 10px 30px rgba(232, 184, 109, 0.35);
 }
 
 .heart-submit-btn:disabled {
@@ -724,33 +784,19 @@ body {
 }
 
 .heart-status.success {
-  color: var(--gold);
+  color: var(--mint-text);
 }
 
 .heart-status.error {
   color: var(--rose);
 }
 
-@media (max-width: 600px) {
-  .heart-container {
-    max-width: 95%;
-    aspect-ratio: 1/1;
-  }
-
-  .heart-content {
-    max-width: 280px;
-  }
-
-  .heart-input {
-    font-size: 13px;
-  }
-}
-
 /* ── FOOTER ── */
 footer {
   padding: 60px 20px;
   text-align: center;
-  border-top: 1px solid rgba(201, 168, 76, 0.08);
+  background: var(--midnight);
+  border-top: 1px solid rgba(232, 184, 109, 0.08);
   font-size: 10px;
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -768,7 +814,7 @@ footer {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--glass);
+  background: rgba(13, 10, 11, 0.8);
   border: 1px solid var(--glass-border);
   color: var(--gold);
   font-size: 18px;
@@ -778,10 +824,12 @@ footer {
   justify-content: center;
   backdrop-filter: blur(12px);
   transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
 .music-btn:hover {
-  background: rgba(201, 168, 76, 0.15);
+  background: rgba(232, 184, 109, 0.15);
+  border-color: var(--gold);
   transform: scale(1.08);
 }
 
@@ -790,32 +838,51 @@ footer {
   position: fixed;
   top: 0;
   left: 0;
-  height: 2px;
+  height: 3px;
   width: 0%;
-  background: linear-gradient(to right, var(--gold-dim), var(--gold));
+  background: linear-gradient(to right, var(--gold-dim), var(--rose), var(--gold));
   z-index: 9999;
   transition: width 0.1s linear;
 }
 
-/* ── RESPONSIVE ── */
+/* ═══════════════════════════════════════════════════
+   📱 COMPLETE MOBILE RESPONSIVE (≤768px)
+   ✅ Gallery Scroll Fixed — No Nested Media Queries
+   ═══════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  /* ── GLOBAL MOBILE FIXES ── */
-  html, body {
-    overflow-x: hidden;
+
+  html,
+  body {
+    overflow-x: hidden !important;
+    width: 100vw;
     position: relative;
+  }
+
+  .site-root {
     width: 100%;
+    overflow-x: hidden;
   }
 
   /* ── HERO MOBILE ── */
   #hero {
     justify-content: center;
     text-align: center;
+    height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  .hero-bg-img {
+    background-image: url('/homepage_mbleviews.jpg');
+    transform: scale(1);
+    background-position: center center;
+    background-attachment: scroll;
+    filter: brightness(0.65) saturate(1.05);
   }
 
   .hero-content {
     align-items: center;
     text-align: center;
-    padding: 0 20px;
+    padding: 0 24px;
     width: 100%;
     justify-content: center;
   }
@@ -831,6 +898,7 @@ footer {
     font-size: 16px;
     margin: 0 auto 30px;
     padding: 0 10px;
+    text-align: center;
   }
 
   .hero-divider {
@@ -849,6 +917,8 @@ footer {
     flex-direction: column;
     min-height: auto;
     height: auto;
+    overflow: visible;
+    width: 100%;
   }
 
   .chapter:nth-child(even) {
@@ -857,34 +927,52 @@ footer {
 
   .chapter-img-side {
     width: 100%;
-    height: 60vh;
-    min-height: 350px;
+    aspect-ratio: 4/3;
+    min-height: 280px;
+    max-height: 55vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .chapter-img-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transform: scale(1);
+    display: block;
   }
 
   .chapter-img-overlay {
-    background: linear-gradient(to top, var(--midnight) 0%, transparent 50%) !important;
+    background: linear-gradient(to top, var(--midnight) 0%, transparent 65%) !important;
+    opacity: 0.85;
   }
 
   .chapter-content {
     width: 100%;
-    padding: 40px 20px 60px !important;
-    min-height: auto;
+    padding: 40px 24px 50px !important;
+    text-align: center;
   }
 
   .chapter-num {
     font-size: 60px;
-    top: 10px;
-    right: 15px;
-    opacity: 0.15;
+    top: 15px;
+    right: 20px;
+    opacity: 0.12;
   }
 
-  .chapter-title-en {
-    font-size: 28px;
+  .chapter-tag,
+  .chapter-date,
+  .chapter-title-en,
+  .chapter-title-tel {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .chapter-title-tel {
-    font-size: 22px;
-    margin-bottom: 25px;
+    display: block;
+    margin: 0 auto 25px;
   }
 
   .chapter-glass-text {
@@ -892,25 +980,96 @@ footer {
     font-size: 14px;
     padding: 20px;
     line-height: 1.7;
+    text-align: left;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
-  /* ── GALLERY MOBILE ── */
+  .chapter-glass-text::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chapter-glass-text::after,
+  .chapter-glass-text::before {
+    display: none;
+  }
+
+  .chapter-divider {
+    margin: 25px auto 0;
+  }
+
+  /* 📱 Mobile: Vertical Stacked Deck */
   .gallery-section {
-    padding: 80px 0 0;
-  }
-
-  .gallery-header {
-    padding-bottom: 40px;
+    padding: 80px 16px;
   }
 
   .gallery-wrap {
-    height: 70vh; /* Shorter on mobile */
+    height: auto;
+    max-width: 100%;
+    perspective: none;
+    overflow: visible;
   }
 
+  .gallery-track {
+    flex-direction: column;
+    gap: 40vh;
+    height: auto;
+    padding: 0;
+    transform-style: flat;
+  }
+
+  .gallery-card {
+    position: sticky;
+    top: 15vh;
+    width: 100%;
+    aspect-ratio: 4/5;
+    border-radius: 16px;
+  }
+
+  .gallery-card-label {
+    font-size: 18px;
+  }
+
+  .gallery-track::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+  }
+
+  .gallery-card,
   .gallery-card:nth-child(odd),
   .gallery-card:nth-child(even) {
-    width: 260px;
-    height: 340px;
+    flex: 0 0 auto !important;
+    /* ✅ Critical: prevent shrinking */
+    width: 82vw !important;
+    max-width: 300px;
+    height: auto !important;
+    aspect-ratio: 3 / 4;
+    scroll-snap-align: center;
+    margin: 0;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .gallery-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .gallery-card-overlay {
+    background: linear-gradient(to top, rgba(13, 10, 11, 0.9) 0%, transparent 60%);
+    padding: 16px;
+    opacity: 1;
+    /* Always visible on touch */
+  }
+
+  .gallery-card-label {
+    font-size: 15px;
+    color: var(--ivory);
   }
 
   /* ── QUOTE MOBILE ── */
@@ -925,6 +1084,7 @@ footer {
 
   .quote-text {
     font-size: 20px;
+    padding: 0 10px;
   }
 
   /* ── EPILOGUE MOBILE ── */
@@ -936,24 +1096,41 @@ footer {
     font-size: 56px;
   }
 
+  .epilogue-body {
+    padding: 0 10px;
+  }
+
   .epilogue-card {
     padding: 30px 20px;
+    width: 100%;
+    max-width: 100%;
   }
 
   /* ── FEEDBACK MOBILE ── */
   .heart-feedback-section {
-    padding: 80px 10px;
+    padding: 80px 16px;
   }
 
   .heart-container {
     max-width: 100%;
     aspect-ratio: auto;
-    min-height: 500px;
+    min-height: 480px;
+    height: auto;
   }
 
   .heart-content {
-    max-width: 90%;
-    padding: 10px;
+    max-width: 92%;
+    padding: 16px;
+  }
+
+  .heart-input {
+    font-size: 13px;
+    padding: 14px 16px;
+  }
+
+  .heart-submit-btn {
+    padding: 16px;
+    font-size: 13px;
   }
 
   /* ── MUSIC BTN MOBILE ── */
@@ -962,5 +1139,79 @@ footer {
     right: 20px;
     width: 44px;
     height: 44px;
+    font-size: 16px;
+  }
+
+  footer {
+    padding: 40px 16px;
+    font-size: 9px;
+    letter-spacing: 3px;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  [class*="chapter"],
+  [class*="gallery"],
+  [class*="hero"],
+  [class*="section"] {
+    contain: layout style;
+    width: 100%;
+    max-width: 100vw;
+  }
+}
+
+/* ── EXTRA SMALL (≤480px) ── */
+@media (max-width: 480px) {
+  .hero-names {
+    font-size: clamp(42px, 14vw, 64px);
+  }
+
+  .chapter-img-side {
+    aspect-ratio: 3/4;
+    min-height: 240px;
+    max-height: 50vh;
+  }
+
+  .chapter-content {
+    padding: 32px 20px 40px !important;
+  }
+
+  .chapter-title-en {
+    font-size: 24px;
+  }
+
+  .gallery-card,
+  .gallery-card:nth-child(odd),
+  .gallery-card:nth-child(even) {
+    width: 90vw;
+    max-width: 260px;
+    aspect-ratio: 3/4;
+  }
+
+  .epilogue-heading {
+    font-size: 48px;
+  }
+}
+
+/* ── iOS SAFE AREA SUPPORT ── */
+@supports (padding: max(0px)) {
+  @media (max-width: 768px) {
+
+    .hero-content,
+    .chapter-content,
+    .gallery-header,
+    footer {
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
   }
 }
